@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import{
   Delete as Trash,
   SwapVert as Swap,
@@ -44,26 +44,53 @@ const ButtonIcon = styled.button`
 `
 
 function Tabela({data}){
+  const [paisSelecionado, setPaisSelecionado] = useState([]);
+
+  function ordenarPaisesPopulacao(){
+    data.sort(function(a,b){
+      return a.population - b.population
+    });
+    console.log(data)
+  }
+
+  function ordenarPaisesNome(){
+    data.sort(function(a,b){
+      if(a.name < b.name)
+        return -1
+      if(a.name > b.name)
+        return 1
+      return 0
+    });
+    console.log(data);
+  }
+
+  function deletarPais(p){
+    data.forEach(pais => {
+      if(p.name === pais.name){
+        data.splice(data.indexOf(pais), 1)
+      }
+    });
+  }
 
   return(
     <Table>
         <Tr>
             <Th>
               Nome
-              <ButtonIcon><Swap /></ButtonIcon>
+              <ButtonIcon onClick={ordenarPaisesNome}><Swap /></ButtonIcon>
             </Th>
             <Th>
               População
-              <ButtonIcon><Swap /></ButtonIcon>
+              <ButtonIcon onClick={ordenarPaisesPopulacao}><Swap /></ButtonIcon>
             </Th>
             <Th>Ações</Th>
         </Tr>
         {data.map(pais => (
           <Tr key={pais.code}>
             <Td>{pais.name}</Td>
-            <Td>0</Td>
+            <Td>{pais.population}</Td>
             <Td>
-              <ButtonIcon><Trash /></ButtonIcon>
+              <ButtonIcon onClick={() => deletarPais(pais)}><Trash /></ButtonIcon>
               <ButtonIcon><Edit /></ButtonIcon>
             </Td>
         </Tr>
