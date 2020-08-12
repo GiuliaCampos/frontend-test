@@ -47,9 +47,13 @@ function Form({data}) {
     const [numeroHabitantes, setNumeroHabitantes] = useState();
 
     function handleSubmmit(){
-        console.log(paisSelecionado);
-        console.log(numeroHabitantes);
+      data.map(pais => {
+        if(pais.name === paisSelecionado){
+          pais.population = numeroHabitantes;
+        }
+      });
     }
+
     return (
         <FormArea>
           <form>
