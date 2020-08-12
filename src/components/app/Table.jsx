@@ -1,4 +1,7 @@
 import React from 'react';
+import{
+  Delete as Trash
+} from "@material-ui/icons"
 import styled from "styled-components";
 
 const Table = styled.table`
