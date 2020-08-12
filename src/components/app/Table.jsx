@@ -1,7 +1,11 @@
 import React from 'react';
 import{
-  Delete as Trash
+  Delete as Trash,
+  SwapVert as Swap,
+  Edit,
+  FilterFrames,
 } from "@material-ui/icons"
+import { style } from '../../configs/theme';
 import styled from "styled-components";
 
 const Table = styled.table`
@@ -28,32 +32,44 @@ const Tr = styled.tr`
   }
 `
 
-export default () => (
+const ButtonIcon = styled.button`
+  background-color: #F46357;
+  border-radius: ${style('radius')};
+  box-shadow: ${style('shadow.small')};
+  border: none;
+  color: #fff;
+  margin: 0px 20px;
+  height: 40px;
+  width: 40px;
+`
+
+function Tabela({data}){
+
+  return(
     <Table>
         <Tr>
-            <Th>Nome</Th>
-            <Th>População</Th>
+            <Th>
+              Nome
+              <ButtonIcon><Swap /></ButtonIcon>
+            </Th>
+            <Th>
+              População
+              <ButtonIcon><Swap /></ButtonIcon>
+            </Th>
             <Th>Ações</Th>
         </Tr>
-        <Tr>
-            <Td>Brasil</Td>
-            <Td>50</Td>
-            <Td>botões</Td>
+        {data.map(pais => (
+          <Tr key={pais.code}>
+            <Td>{pais.name}</Td>
+            <Td>0</Td>
+            <Td>
+              <ButtonIcon><Trash /></ButtonIcon>
+              <ButtonIcon><Edit /></ButtonIcon>
+            </Td>
         </Tr>
-        <Tr>
-            <Td>Argentina</Td>
-            <Td>400</Td>
-            <Td>botões</Td>
-        </Tr>
-        <Tr>
-            <Td>EUA</Td>
-            <Td>400</Td>
-            <Td>botões</Td>
-        </Tr>
-        <Tr>
-            <Td>Reino Unido</Td>
-            <Td>400</Td>
-            <Td>botões</Td>
-        </Tr>
+        ))}
     </Table>
-);
+  );
+}
+
+export default Tabela;

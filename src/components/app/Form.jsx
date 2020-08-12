@@ -42,11 +42,13 @@ const Option = styled.option`
   box-shadow: 0px 5px 6px -3px #000;
 `
 
-function Form() {
+function Form({data}) {
     const [paisSelecionado, setPaisSelecionado] = useState('');
+    const [numeroHabitantes, setNumeroHabitantes] = useState();
 
     function handleSubmmit(){
         console.log(paisSelecionado);
+        console.log(numeroHabitantes);
     }
     return (
         <FormArea>
@@ -56,12 +58,21 @@ function Form() {
               value={paisSelecionado} 
               onChange={e => setPaisSelecionado(e.target.value)}
             >
-              <Option value="Jamaica">Jamaica</Option>
-              <Option value="Canada">Canada</Option>
-              <Option value="Australia">Austrália</Option>
+              {data.map(pais => (
+                <Option key={pais.code} value={pais.name}>{pais.name}</Option>
+              ))}
             </Select>
-            <Input className="numeroPopulacao" type="number" id="numeroPopulacao" min="0" placeholder="Habitantes" />
-            <Button label="Aqui" color="quaternary" onClick={handleSubmmit}/>
+            <Input 
+              className="numeroPopulacao" 
+              type="number" 
+              id="numeroPopulacao" 
+              min="0" 
+              value={numeroHabitantes}
+              placeholder="Habitantes"
+              required
+              onChange={e => setNumeroHabitantes(e.target.value)}
+            />
+            <Button label="Adicionar" color="quaternary" onClick={handleSubmmit}/>
           </form>
         </FormArea>
     );
