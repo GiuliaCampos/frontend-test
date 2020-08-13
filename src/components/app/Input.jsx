@@ -11,7 +11,9 @@ export default styled.input `
     margin: 20px;
     padding: 20px;
     box-shadow: 0px 5px 6px -3px #000;
-    font-family: ${props => props.theme.headerFontFamily};
+    font-family: ${props => props.theme.baseFontFamily};
+    font-weight: ${props => props.theme.baseFontWeight};
+    font-size: ${props => props.theme.fontSize.normal};
     &.population{
         width: 180px;
     }
