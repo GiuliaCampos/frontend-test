@@ -49,7 +49,7 @@ export default {
     /**
      * Style Colours
      */
-    background: '#EFF1F2',
+    background: '#F3F3F3',
     baseFont: '#5e6168',
     headerFont: '#2A2D34',
     anchor: '#F46357',
