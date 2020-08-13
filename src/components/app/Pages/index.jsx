@@ -1,18 +1,18 @@
 import 'regenerator-runtime/runtime'
 import React, {useState, useEffect, useCallback} from 'react';
 
-import Theme from '../theme';
-import Layout from '../layout';
+import Theme from '../../theme';
+import Layout from '../../layout';
 import styled from "styled-components";
 
-import H1 from './H1';
-import Select from './Dropdown';
-import Option from './Option';
-import Button from './Button';
-import Table from './Table';
-import Input from './Input';
+import H1 from '../H1';
+import Select from '../Dropdown';
+import Option from '../Option';
+import Button from '../Button';
+import Table from '../Table';
+import Input from '../Input';
 
-import Country from '../../api/country';
+import Country from '../../../api/country';
 
 const FormArea = styled.div `
   @media only screen and (min-width: 768px) {
@@ -35,7 +35,6 @@ function Index(){
     aux.sort(function(a,b){
       return a.population - b.population
     });
-    console.log(aux);
     setCountriesAdd(aux);
   }, [countriesAdd]);
 
@@ -49,17 +48,15 @@ function Index(){
         return 1
       return 0
     });
-    console.log(aux);
     setCountriesAdd(aux);
   }, [countriesAdd]);
 
-
-  function deleteCountry(p){
+  function deleteCountry(){
     let aux = [];
     aux = countriesAdd;
-    aux.forEach(pais => {
-      if(p.name === pais.name){
-        aux.splice(aux.indexOf(pais), 1)
+    aux.forEach(country => {
+      if(selectedCountry === country.name){
+        aux.splice(aux.indexOf(country), 1)
       }
     });
     setCountriesAdd(aux);
@@ -83,6 +80,7 @@ function Index(){
     if(!add){
       setCountriesAdd([...countriesAdd, aux]);
     }
+    setPopulation('');
   }
 
   useEffect(() => {
@@ -107,8 +105,8 @@ function Index(){
         <FormArea>
           <form>
             <Select value={selectedCountry} onChange={e => setSelectedCountry(e.target.value)} >
-              {countries.map(pais => (
-                <Option key={pais.code} value={pais.name}> {pais.name} </Option>
+              {countries.map(country => (
+                <Option key={country.code} value={country.name}> {country.name} </Option>
               ))}
             </Select>
             <Input 
@@ -121,6 +119,7 @@ function Index(){
               onChange={e => setPopulation(e.target.value)} 
             />
             <Button label="Add" color="quaternary" onClick={handleSubmmit}/>
+            <Button label="Remove Country" color="quaternary" onClick={deleteCountry} />
           </form>
         </FormArea>
         <Table 

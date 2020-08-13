@@ -1,7 +1,6 @@
 import React from 'react';
 
 import{
-  Delete as Trash,
   SwapVert as Swap,
 } from "@material-ui/icons"
 
@@ -68,15 +67,11 @@ function Tabela({data, callbackFunctionOrderByName, callbackFunctionOrderByPopul
             Population
             <ButtonIcon onClick={callbackFunctionOrderByPopulation}><Swap /></ButtonIcon>
           </Th>
-          <Th>Actions</Th>
         </Tr>  
-        {data.map(pais => (
-          <Tr key={pais.code}>
-            <Td>{pais.name}</Td>
-            <Td>{pais.population}</Td>
-            <Td>
-              <ButtonIcon><Trash /></ButtonIcon>
-            </Td>
+        {data.map(country => (
+          <Tr key={country.code}>
+            <Td>{country.name}</Td>
+            <Td>{country.population}</Td>
           </Tr>
           ))}
       </tbody>
