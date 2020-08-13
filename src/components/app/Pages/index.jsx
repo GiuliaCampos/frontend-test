@@ -14,6 +14,7 @@ import Input from '../Input';
 
 import Country from '../../../api/country';
 
+
 const FormArea = styled.div `
   @media only screen and (min-width: 768px) {
     display: table-caption;
@@ -27,7 +28,7 @@ function Index(){
   const [countries, setCountries] = useState([]);
   const [countriesAdd, setCountriesAdd] = useState([]);
   const [selectedCountry, setSelectedCountry] = useState('AFGHANISTAN');
-  const [population, setPopulation] = useState();
+  const [population, setPopulation] = useState('');
 
   const orderCountriesByPopulation = useCallback(() => {
     let aux = [];
@@ -51,7 +52,7 @@ function Index(){
     setCountriesAdd(aux);
   }, [countriesAdd]);
 
-  function deleteCountry(){
+  const deleteCountry = () => {
     let aux = [];
     aux = countriesAdd;
     aux.forEach(country => {
@@ -62,7 +63,7 @@ function Index(){
     setCountriesAdd(aux);
   }
 
-  function handleSubmmit(){
+  const handleSubmmit = () => {
     let aux = '';
     let add = false;
     countries.map(p => {
@@ -130,6 +131,6 @@ function Index(){
       </Layout>
     </Theme>
   )
-};
+}
 
 export default Index;

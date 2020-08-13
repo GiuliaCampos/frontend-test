@@ -49,7 +49,7 @@ function Login(props){
       <Layout>
         <FormArea>
           <H1>Welcome to World Populations</H1>
-          <H3><Earth /> Hello, nice to see you! Enter your e-mail and password</H3>
+          <H3>Hello, nice to see you! Enter your e-mail and password</H3>
           {error && <H3>{error}</H3>}
           <Input value={email} placeholder="E-mail" required type="email" onChange={e => setEmail(e.target.value)}/>
           <Input value={password} placeholder="Password" required type="password" onChange={e => setPassword(e.target.value)} />
