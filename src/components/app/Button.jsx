@@ -21,6 +21,14 @@ const ButtonStyled = styled.button`
   position: relative;
   text-decoration: none;
   margin-left: ${style('marginHalf')};
+
+  @media only screen and (min-width: 768px){
+    font-size: 2.5rem
+    
+  }
+  @media only screen and (min-width: 992px){
+    font-size: 1rem
+  }
 `;
 
 const Button = ({ label, ...props }) => (
