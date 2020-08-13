@@ -1,76 +1,87 @@
 import 'regenerator-runtime/runtime'
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useCallback} from 'react';
+
 import Theme from '../theme';
 import Layout from '../layout';
-import H1 from './H1';
-import Button from './Button';
-import Table from './Table';
-import Country from '../../api/country';
 import styled from "styled-components";
 
-const FormArea = styled.div `
-  diplay = row;
-`
-const Input = styled.input `
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  appearance: none;
-  width: 300px;
-  height: 40px;
-  border-color: #fff;
-  border-radius: 50px;
-  margin: 20px;
-  padding: 20px;
-  box-shadow: 0px 5px 6px -3px #000;
+import H1 from './H1';
+import Select from './Dropdown';
+import Option from './Option';
+import Button from './Button';
+import Table from './Table';
+import Input from './Input';
 
-  &.numeroPopulacao{
-    width: 180px;
+import Country from '../../api/country';
+
+const FormArea = styled.div `
+  @media only screen and (min-width: 768px) {
+    display: table-caption;
   }
-`
-const Select = styled.select`
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  appearance: none;
-  width: 300px;
-  height: 40px;
-  border-color: #fff;
-  border-radius: 50px;
-  margin: 20px;
-  box-shadow: 0px 5px 6px -3px #000;
-`
-const Option = styled.option`
-  width: 300px;
-  height: 40px;
-  border-color: #fff;
-  border-radius: 50px;
-  margin: 20px;
-  padding: 20px;
-  box-shadow: 0px 5px 6px -3px #000;
+  @media only screen and (min-width: 992px) {
+    display: flex;
+  }
 `
 
 function Index(){
-  const [paises, setPaises] = useState([]);
-  const [paisesAdd, setPaisesAdd] = useState([]);
-  const [paisSelecionado, setPaisSelecionado] = useState('');
-  const [numeroHabitantes, setNumeroHabitantes] = useState();
+  const [countries, setCountries] = useState([]);
+  const [countriesAdd, setCountriesAdd] = useState([]);
+  const [selectedCountry, setSelectedCountry] = useState('AFGHANISTAN');
+  const [population, setPopulation] = useState();
+
+  const orderCountriesByPopulation = useCallback(() => {
+    let aux = [];
+    aux = countriesAdd;
+    aux.sort(function(a,b){
+      return a.population - b.population
+    });
+    console.log(aux);
+    setCountriesAdd(aux);
+  }, [countriesAdd]);
+
+  const orderCountriesByName = useCallback(() => {
+    let aux = [];
+    aux = countriesAdd;
+    aux.sort(function(a,b){
+      if(a.name < b.name)
+        return -1
+      if(a.name > b.name)
+        return 1
+      return 0
+    });
+    console.log(aux);
+    setCountriesAdd(aux);
+  }, [countriesAdd]);
+
+
+  function deleteCountry(p){
+    let aux = [];
+    aux = countriesAdd;
+    aux.forEach(pais => {
+      if(p.name === pais.name){
+        aux.splice(aux.indexOf(pais), 1)
+      }
+    });
+    setCountriesAdd(aux);
+  }
 
   function handleSubmmit(){
     let aux = '';
-    let adicionada = false;
-    paises.map(p => {
-      if(p.name === paisSelecionado){
-        p.population = numeroHabitantes;
+    let add = false;
+    countries.map(p => {
+      if(p.name === selectedCountry){
+        p.population = population;
         aux = p;
       }
     });
-    paisesAdd.map(p => {
+    countriesAdd.map(p => {
       if(p.name === aux.name){
         p.population = aux.population
-        adicionada = true;
+        add = true;
       }
     });
-    if(!adicionada){
-      setPaisesAdd([...paisesAdd, aux]);
+    if(!add){
+      setCountriesAdd([...countriesAdd, aux]);
     }
   }
 
@@ -81,9 +92,9 @@ function Index(){
         response.map(pais => (
           pais["population"] = 0
         ));
-        setPaises(response);
+        setCountries(response);
       }catch(err){
-        console.log("Ocorreu um erro: " +err);
+        alert("An error has occurred! Try again");
       }
     }
     loadCountries();
@@ -92,32 +103,31 @@ function Index(){
   return(
     <Theme>
       <Layout>
-      <H1>Populações Mundiais</H1>
-      <FormArea>
+        <H1>World Populations</H1>
+        <FormArea>
           <form>
-            <Select 
-              id="paises" 
-              value={paisSelecionado} 
-              onChange={e => setPaisSelecionado(e.target.value)}
-            >
-              {paises.map(pais => (
-                <Option key={pais.code} value={pais.name}>{pais.name}</Option>
+            <Select value={selectedCountry} onChange={e => setSelectedCountry(e.target.value)} >
+              {countries.map(pais => (
+                <Option key={pais.code} value={pais.name}> {pais.name} </Option>
               ))}
             </Select>
             <Input 
-              className="numeroPopulacao" 
+              className="population" 
               type="number" 
-              id="numeroPopulacao" 
               min="0" 
-              value={numeroHabitantes}
-              placeholder="Habitantes"
-              required
-              onChange={e => setNumeroHabitantes(e.target.value)}
+              value={population} 
+              placeholder="Population" 
+              required 
+              onChange={e => setPopulation(e.target.value)} 
             />
-            <Button label="Adicionar" color="quaternary" onClick={handleSubmmit}/>
+            <Button label="Add" color="quaternary" onClick={handleSubmmit}/>
           </form>
         </FormArea>
-      <Table data={paisesAdd} />
+        <Table 
+          data={countriesAdd} 
+          callbackFunctionOrderByName={orderCountriesByName} 
+          callbackFunctionOrderByPopulation={orderCountriesByPopulation}
+        />
       </Layout>
     </Theme>
   )
