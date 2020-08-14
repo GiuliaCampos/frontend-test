@@ -36,7 +36,7 @@ function Login(props){
 
   function handleSignin(){
     if(!email || !password){
-      setError("Fill in all fields, please")
+      setError("Enter your e-mail and password, please")
     } else{
       const response = Math.random();
       login(response)

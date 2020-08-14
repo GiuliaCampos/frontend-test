@@ -62,6 +62,7 @@ function Tabela({data, callbackFunctionOrderByName, callbackFunctionOrderByPopul
     <Table>
       <tbody>
         <Tr>
+          <Th>Code</Th>
           <Th>
             Name
             <ButtonIcon onClick={callbackFunctionOrderByName}><Swap /></ButtonIcon>
@@ -73,6 +74,7 @@ function Tabela({data, callbackFunctionOrderByName, callbackFunctionOrderByPopul
         </Tr>  
         {countriesAdd.map(country => (
           <Tr key={country.code}>
+            <Td>{country.code}</Td>
             <Td>{country.name}</Td>
             <Td>{country.population}</Td>
           </Tr>
