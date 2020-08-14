@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 
 import{
   SwapVert as Swap,
@@ -6,6 +6,8 @@ import{
 
 import { style } from '../../configs/theme';
 import styled from "styled-components";
+
+import {useCountries} from '../hooks/Countries'
 
 const Table = styled.table`
   border-collapse: collapse;
@@ -54,6 +56,7 @@ const ButtonIcon = styled.button`
 `
 
 function Tabela({data, callbackFunctionOrderByName, callbackFunctionOrderByPopulation}){
+  const {countriesAdd, setCountriesAdd} = useCountries();
 
   return(
     <Table>
@@ -68,7 +71,7 @@ function Tabela({data, callbackFunctionOrderByName, callbackFunctionOrderByPopul
             <ButtonIcon onClick={callbackFunctionOrderByPopulation}><Swap /></ButtonIcon>
           </Th>
         </Tr>  
-        {data.map(country => (
+        {countriesAdd.map(country => (
           <Tr key={country.code}>
             <Td>{country.name}</Td>
             <Td>{country.population}</Td>

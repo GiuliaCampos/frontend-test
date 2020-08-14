@@ -2,5 +2,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './App';
+import {CountriesProvider} from './components/hooks/Countries'
 
-ReactDOM.render( <App /> , document.getElementById('app'));
+ReactDOM.render( 
+<CountriesProvider>
+    <App />
+</CountriesProvider>
+, document.getElementById('app'));

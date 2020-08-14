@@ -5,6 +5,8 @@ import Theme from '../../theme';
 import Layout from '../../layout';
 import styled from "styled-components";
 
+import {useCountries} from '../../hooks/Countries';
+
 import H1 from '../H1';
 import Select from '../Dropdown';
 import Option from '../Option';
@@ -26,44 +28,38 @@ const FormArea = styled.div `
 
 function Index(){
   const [countries, setCountries] = useState([]);
-  const [countriesAdd, setCountriesAdd] = useState([]);
+  const {countriesAdd, setCountriesAdd} = useCountries();
   const [selectedCountry, setSelectedCountry] = useState('AFGHANISTAN');
   const [population, setPopulation] = useState('');
 
   const orderCountriesByPopulation = useCallback(() => {
-    let aux = [];
-    aux = countriesAdd;
-    aux.sort(function(a,b){
+    setCountriesAdd([...countriesAdd].sort(function(a,b){
       return a.population - b.population
-    });
-    setCountriesAdd(aux);
-  }, [countriesAdd]);
+    }));
+  }, [countriesAdd, setCountriesAdd]);
 
   const orderCountriesByName = useCallback(() => {
-    let aux = [];
-    aux = countriesAdd;
-    aux.sort(function(a,b){
+    setCountriesAdd([...countriesAdd].sort(function(a,b){
       if(a.name < b.name)
         return -1
       if(a.name > b.name)
         return 1
       return 0
-    });
-    setCountriesAdd(aux);
-  }, [countriesAdd]);
+    }));
+  }, [countriesAdd, setCountriesAdd]);
 
   const deleteCountry = () => {
-    let aux = [];
-    aux = countriesAdd;
-    aux.forEach(country => {
+    let aux;
+    countriesAdd.forEach(country => {
       if(selectedCountry === country.name){
-        aux.splice(aux.indexOf(country), 1)
+        aux = countriesAdd.indexOf(country);
       }
     });
-    setCountriesAdd(aux);
+
+    setCountriesAdd([...countriesAdd].splice(aux, 1));
   }
 
-  const handleSubmmit = () => {
+  const handleSubmmit = useCallback(() => {
     let aux = '';
     let add = false;
     countries.map(p => {
@@ -82,7 +78,7 @@ function Index(){
       setCountriesAdd([...countriesAdd, aux]);
     }
     setPopulation('');
-  }
+  }, [countries, selectedCountry, countriesAdd, population]);
 
   useEffect(() => {
     const loadCountries = async() => {
